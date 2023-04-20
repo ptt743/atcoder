@@ -4,7 +4,9 @@
 #include<string>
 #include<queue>
 #include<stack>
+#include <atcoder/all>
 using namespace std;
+using namespace atcoder;
 //*****taipt*****//
 
 void solve(){
