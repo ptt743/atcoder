@@ -16,10 +16,9 @@ vector<vector<int>> bfs(int is, int js, vector<string>&a){
 	int h = a.size();
 	int w = a[0].size();
 	queue<pair<int,int>> qq;
-	vector<vector<int>> res(h, vector<int>(w,INT_MAX));
-	vector<vector<bool>> visited(h, vector<bool>(w,false));
+	vector<vector<int>> res(h, vector<int>(w,1000000000));
+  res[is][js]=0;
 	qq.push(make_pair(is, js));
-	visited[is][js] = true;
 	while(!qq.empty()){
 		auto t = qq.front();
 		int i  = t.first;
@@ -29,10 +28,11 @@ vector<vector<int>> bfs(int is, int js, vector<string>&a){
 			int di = i + dx[k];
 			int dj = j + dy[k];
 			if(di<0 || di >= h || dj <0 || dj >=w ) continue;
-			if(a[di][dj]=='#' || visited[di][dj]) continue;
-			visited[di][dj]= true;
-			res[di][dj] = res[i][j]+1;
-			qq.push(make_pair(di,dj));
+      if(a[di][dj]=='#') continue;
+			if(res[di][dj]> res[i][j]+1){
+			  res[di][dj] = res[i][j]+1;
+        qq.push(make_pair(di,dj));
+      }
 		}
 	}
 	return res;
@@ -59,28 +59,31 @@ void solve(){
 	for(int i =0;i< cnt;i++){
 		d[i] = bfs(candy[i].first, candy[i].second, a);
 	}
-	vector<vector<int>> dp((1<<cnt)+1, vector<int>(cnt,INT_MAX));
-	for(int i =0;i< cnt;i++) dp[1<<i][i] = d[i][is][js];
+	vector<vector<int>> dp(1<<cnt, vector<int>(cnt,1000000000 ));
+	for(int i =0;i< cnt;i++) {
+    dp[1<<i][i] = d[i][is][js];
+  }
 
 	for(int s = 1; s< (1<<cnt);s++){
 		vector<int> b;
-		for(int j =0;j< cnt;j++) if(s & 1<<j) b.push_back(j);
-
-		for(int nx: b){
+    for(int j =0;j< cnt;j++) if(s>>j & 1) b.push_back(j);
+    for(int nx: b){
 			for( int last:b){
 				if(last!=nx){
-					dp[s][nx] = min(dp[s][nx],dp[s & !(1<<nx)][last] + d[last][candy[nx].first][candy[nx].second]);
+					dp[s][nx] = min(dp[s][nx],dp[s & ~(1<<nx)][last] + d[last][candy[nx].first][candy[nx].second]);
 				}
 			}
 		}
 
 	}
 	int ans = -1;
+  vector<vector<int>> rr = bfs(is,js,a);
+  if(rr[ie][je]<=t) ans =0;
 	for(int s = 1;s< 1<<cnt;s++){
 		for(int i =0;i< cnt;i++){
-			if(dp[s][i]+ d[i][ie][je]< t){
+			if(dp[s][i]+ d[i][ie][je]<=t){
 				int count = 0;
-				for(int j =0;j< cnt;j++) if(s & 1<<j) count++;
+				for(int j =0;j< cnt;j++) if(s>>j & 1) count++;
 				ans = max(ans, count);
 			}
 		}
