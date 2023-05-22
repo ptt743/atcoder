@@ -8,10 +8,13 @@
 using namespace std;
 using namespace atcoder;
 //*****taipt*****//
-using mint = modint998244353;
 
 void solve(){
-	
+	long long A,B;
+  cin>>B>>A;
+  long long result = B/A;
+  if(B%A!=0)result++;
+  cout<<result<<endl;
 }
  
 int main() {

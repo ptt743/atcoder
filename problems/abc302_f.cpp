@@ -8,10 +8,10 @@
 using namespace std;
 using namespace atcoder;
 //*****taipt*****//
-using mint = modint998244353;
 
 void solve(){
-	
+	int n,m;
+
 }
  
 int main() {

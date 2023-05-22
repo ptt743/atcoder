@@ -11,10 +11,14 @@ using namespace atcoder;
 using mint = modint998244353;
 
 void solve(){
-	
+	long long n;
+
 }
  
 int main() {
-    solve();
+    int t;
+    cin>>t;
+    while(t--)
+      solve();
     return 0;
 }
