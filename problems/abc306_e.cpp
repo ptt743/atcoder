@@ -13,9 +13,10 @@ using namespace atcoder;
 using mint = modint998244353;
 
 void solve(){
-	int n,k,q;
+  int n,k,q;
   cin>> n>> k>> q;
-  set<pair<long long,long long>> st1, st2;
+  set<pair<long long,long long>> st1;
+  set<pair<long long,long long>,greater<pair<long long, long long>>> st2;
   unordered_map<long long,long long> mp;
   int count =0;
   long long sum =0;
@@ -23,7 +24,12 @@ void solve(){
     count++;
     long long x, y;
     cin>> x>>y;
-    if(count<=k){
+    if(st1.size()<=k-1){
+      auto it  = st1.find(make_pair(mp[x],x));
+      if(it!=st1.end()){
+	st1.erase(it);
+	sum-=mp[x];
+      }
       st1.insert(make_pair(y,x));
       sum+=y;
       mp[x] = y;
@@ -41,14 +47,16 @@ void solve(){
       mp[x] = y;
       if(st2.size()>0){
       auto be = st1.begin();
-      auto end = st2.end(); --end;
-        if((*be).first<(*end).first){
+      auto end = st2.begin();
+        if((*be).first< (*end).first){
           sum = sum - (*be).first + (*end).first;
           auto temp1 = *be, temp2 = *end;
           st1.erase(be);
           st2.erase(end);
+ 
           st1.insert(temp2);
           st2.insert(temp1);
+          
         }
       }
     }
