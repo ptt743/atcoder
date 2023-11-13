@@ -11,54 +11,35 @@ using namespace atcoder;
 using mint = modint998244353;
 
 void solve(){
-	int n,m;
-	cin>> n >>m;
-	vector<int> a(m),b(m);
-	for(int i =0;i< m;i++) cin>> a[i];
-	for(int i =0;i<m;i++) cin>> b[i];
-	vector<int> res(n,-1);
-	bool check = true;
-	vector<vector<int>> adj(n,vector<int>());
-	for(int i =0;i<m;i++){
-		int inda = a[i]-1;
-		int indb = b[i]-1;
-		if(inda==indb){
-			check = false;
-			break;
-		}
-		adj[inda].push_back(indb);
-		adj[indb].push_back(inda);
+	int a[9][9];
+	int b[9];
+	bool flag=true;
+	for(int i=0;i<9;i++)for(int j=0;j<9;j++)cin>>a[i][j];
+	for(int i=0;i<9;i++){
+        for(int k=0;k<9;k++)b[k]=0;
+		for(int j=0;j<9;j++)b[a[i][j]-1]++;
+		for(int k=0;k<9;k++)if(b[k]!=1)flag=false;
 	}
-	vector<bool> visited(n);
-	function<void(int)> dfs = [&](int u)->void{
-		res[u] = 1;
-		visited[u] = true;
-		queue<int> qq;
-		qq.push(u);
-		while(!qq.empty()){
-			int v = qq.front();
-			qq.pop();
-			for(int i =0;i<adj[v].size();i++){
-				if(!visited[adj[v][i]]){
-					visited[adj[v][i]] = true;
-					res[adj[v][i]] = 1 - res[v];
-					qq.push(adj[v][i]);
+    for(int j=0;j<9;j++){
+        for(int k=0;k<9;k++)b[k]=0;
+		for(int i=0;i<9;i++)b[a[i][j]-1]++;
+		for(int k=0;k<9;k++)if(b[k]!=1)flag=false;
+    }
+	for(int i=0;i<9;i+=3){
+		for(int j=0;j<9;j+=3){
+			for(int k=0;k<9;k++)b[k]=0;
+			for(int ii=0;ii<3;ii++){
+				for(int jj=0;jj<3;jj++){
+					b[a[i+ii][j+jj]-1]++;
 				}
 			}
-		}
-	};
-	for(int i =0;i<n;i++){
-		if(!visited[i]){
-			dfs(i);
+			for(int k=0;k<9;k++)if(b[k]!=1)flag=false;
 		}
 	}
-	for(int i=0;i<m;i++){
-		if(res[a[i]-1]  == res[b[i]-1]){
-			cout<<"No"<<endl;
-			return;
-		}
-	}
-	cout<<"Yes"<<endl;
+	if(flag)cout<<"Yes"<<endl;
+	else cout<<"No"<<endl;
+	return 0;
+
 }
  
 int main() {
