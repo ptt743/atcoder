@@ -17,30 +17,28 @@ long long pow10(int n){
 }
 void solve(){
 	long long n; cin>> n;
-	vector<long long> a;
-	a.push_back(10);
-	for(int i =0;i<=17;i++){
-		a.push_back(9 * pow10(i) + a.back());
-		cout<< a.back()<<endl;	
+	if(n<=10){ 
+	   cout<<n-1<<endl;
+	   return;
 	}
-	int index = upper_bound(a.begin(), a.end(), n) - a.begin();
-	cout<<"index"<<index<<endl;
-	int addition = n - a[index-1];
-	long long begin = 1 * pow10(index) +1;
-	if(index==0) begin = 0;
-		cout<< begin<<" "<<addition<<endl;
-	int count = 0;
-	while(addition>0){
-		int back = (addition>=9)?9:addition;
-		begin= 9*pow10(count);
-		count++;
-		addition-=9;
+	n-=1;
+	for(int d = 1;;d++){
+		int x = (d+1)/2;
+		long long powTen = pow10(x-1);
+		if(n<= 9*powTen){
+			long long begin = pow10(x-1) + n -1;
+			string prefix = to_string(begin);
+			if(d%2!=0) begin /=10;
+			string suffix = to_string(begin);
+			reverse(suffix.begin(), suffix.end());
+			string result = prefix + suffix;
+			cout << result <<endl;
+			break;
+		} else {
+			n-= 9*powTen;
+		}
 	}
-	string prefix = to_string(begin);
-	string suffix = prefix;
-	reverse(suffix.begin(), suffix.end());
-	string result = prefix + suffix;
-	cout<< result << endl;
+
 }
  
 int main() {
