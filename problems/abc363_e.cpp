@@ -10,31 +10,44 @@ using namespace atcoder;
 //*****taipt*****//
 using mint = modint998244353;
 
-long long TEN(int x) { return x == 0 ? 1 : TEN(x - 1) * 10; }
-int solve() {
-  long long N;
-  cin >> N;
-  if (N == 1) {
-    cout << 0 << endl;
-    return 0;
-  }
-  N--;
-  long long sum =1;
-  for (int d = 1;; d++) {
-    int x = (d + 1) / 2;
-    if (N <= 9 * TEN(x - 1)) {
-      cout<< N<<" "<<x<<" "<<sum<<endl;
-      string S = to_string(TEN(x - 1) + N - 1);
-      S.resize(d, ' ');
-      for (int i = x; i < d; i++) S[i] = S[d - 1 - i];
-      cout << S << endl;
-      return 0;
-    } else {
-	   cout<<9*TEN(x-1)<<endl; 
-      sum+= 9*TEN(x-1);
-      N -= 9 * TEN(x - 1);
-    }
-  }
+void solve(){
+	int h,w,y;
+	cin>> h >> w >> y;
+	vector<vector<int>> adj(h+1, vector<int>(w+1,0));
+	vector<queue<pair<int,int>>> qq(100001, queue<pair<int,int>>());
+	vector<vector<bool>> visited(h+1, vector<bool>(w+1, false));
+	for(int i =1;i<=h;i++){
+		for(int j =1;j<=w;j++){
+			cin>> adj[i][j];
+			if(i==1 || i == h || j ==1 ||  j==h){
+				qq[adj[i][j]].push(make_pair(i,j));
+				visited[i][j] = true;
+			}
+			
+		}
+	}
+	vector<int> count(y+1,0);
+	vector<int> dx = {1,-1,0,0};
+	vector<int> dy = {0,0,1,-1};
+	int ans = w*h;
+	for(int i  =1;i<= y;i++){
+		while(!qq[i].empty()){
+			ans--;
+			pair<int, int> front = qq[i].front();
+			qq[i].pop();
+			for(int j =0;j< 4;j++){
+				int nx = front.first+ dx[j];
+				int ny = front.second+ dy[j];
+				if( nx>=1 && nx <= h && ny>=1 && ny<= w && !visited[nx][ny]){
+					qq[max(adj[nx][ny],i)].push(make_pair(nx,ny));
+					visited[nx][ny]= true;
+				}
+			}
+		}
+		cout<< ans<<endl;
+	}
+
+
 }
  
 int main() {
