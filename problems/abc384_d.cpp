@@ -20,10 +20,35 @@ void solve(){
 		cin >> a[i];
 		sum+= a[i];
 	}
-	long long target = sum - (s%sum);
+	long long remain = s%sum;
 	int left = 0, right = 0;
-
-
+	long long temp = 0;
+	for(int i =0;i< n;i++){
+		temp+=a[i];
+		while(left <=i && temp>remain){
+			temp -= a[left];
+			left++;
+		}
+		if(temp==remain){
+			cout<<"Yes"<<endl;
+			return;
+		}
+	}
+	long long target = sum - (s%sum);
+        left = 0, right = 0;
+	temp = 0;
+	for(int i =0;i< n;i++){
+		temp+=a[i];
+		while(left <=i && temp>target){
+			temp -= a[left];
+			left++;
+		}
+		if(temp==target){
+			cout<<"Yes"<<endl;
+			return;
+		}
+	}
+	cout<<"No"<<endl;
 }
  
 int main() {
