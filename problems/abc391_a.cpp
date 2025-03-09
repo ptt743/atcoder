@@ -12,7 +12,16 @@ using namespace atcoder;
 using mint = modint998244353;
 
 void solve(){
-	
+	map<char, char> mp;
+	mp['N'] = 'S';
+	mp['S'] = 'N';
+	mp['W'] = 'E';
+	mp['E'] = 'W';
+	string s;
+	cin>> s;
+	int n = s.size();
+	for(int i =0;i< n;i++) cout<< mp[s[i]];
+	cout<< endl;
 }
  
 int main() {
